@@ -330,6 +330,9 @@ void Frame::updateTitleBarVisibility()
     } else if (FloatingWindow *fw = floatingWindow()) {
         // If there's nested frames then show each Frame's title bar
         visible = !fw->hasSingleFrame();
+    } else if (isMDIWrapper()) {
+        auto dropArea = this->mdiDropAreaWrapper();
+        visible = !dropArea->hasSingleFrame();
     } else {
         visible = true;
     }
@@ -373,6 +376,10 @@ TitleBar *Frame::actualTitleBar() const
         // If there's nested frames then show each Frame's title bar
         if (fw->hasSingleFrame())
             return fw->titleBar();
+    } else if (auto mdiDropArea = mdiDropAreaWrapper()) {
+        if (mdiDropArea->hasSingleFrame()) {
+            return mdiFrame()->titleBar();
+        }
     }
 
     return titleBar();
