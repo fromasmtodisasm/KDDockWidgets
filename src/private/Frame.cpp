@@ -868,7 +868,10 @@ DockWidgetBase *Frame::mdiDockWidgetWrapper() const
 
 DropArea *Frame::mdiDropAreaWrapper() const
 {
-    return qobject_cast<DropArea *>(QWidgetAdapter::parent());
+    auto dropArea = qobject_cast<DropArea *>(QWidgetAdapter::parent());
+    if (dropArea && dropArea->isMDIWrapper())
+        return dropArea;
+    return nullptr;
 }
 
 MDILayoutWidget *Frame::mdiLayoutWidget() const
